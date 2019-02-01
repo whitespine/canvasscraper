@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Steal scholastics shit.
-// @author       You
+// @author       Jacob Henry (github.com/whitespine)
 // @match        https://canvas.wpi.edu/files*
 // @grant        GM_getValue
 // @grant        GM_setValue
