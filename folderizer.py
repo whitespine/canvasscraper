@@ -28,11 +28,15 @@ for full_path, auto_name, indiv_name in file_entries:
         full_path = full_path.replace(bad, "_")
 
     # Make the path a proper path
-    dir_path = os.path.join(OUTPUT_FOLDER, *(full_path.split(PATH_SEP)[:-1]))
+    full_path = full_path.split(PATH_SEP)
+    full_path = [p.strip() for p in full_path]
+    dir_path = os.path.join(OUTPUT_FOLDER, *full_path[:-1])
     try:
-        os.mkdir(dir_path)
-    except OSError:
-        pass # Doesn't matter
+        os.makedirs(dir_path)
+    except OSError as e:
+        if "already exists" not in str(e):
+            print("Failed to create {}".format(dir_path)) # Doesn't matter
+            print(e)
 
     # Find the file we're currently looking at
     success = False
