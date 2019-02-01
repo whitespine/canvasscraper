@@ -24,7 +24,7 @@ file_entries = [f.split(ELT_SEP) for f in file_entries]
 file_entry_dict = {}
 for full_path, auto_name, indiv_name in file_entries:
     # Perform rudimentary sanitation
-    for bad in ["//", "/", "..", ".", '\\\\', '\\']:
+    for bad in ["//", "/", "..", ".", '\\\\', '\\', ":"]:
         full_path = full_path.replace(bad, "_")
 
     # Make the path a proper path

@@ -5,6 +5,7 @@
 // @description  Steal scholastics shit.
 // @author       Jacob Henry (github.com/whitespine)
 // @match        https://canvas.wpi.edu/files*
+// @match        https://canvas.wpi.edu/courses/*/files*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_download
@@ -28,7 +29,6 @@
 
         // Copy to user clipboard
         GM_setClipboard(s, "text");
-        console.log(s);
 
         // Put to storage
         GM_setValue("canvasDumpExplored", s);
@@ -97,9 +97,17 @@
             // Depending on if its a file or a folder, try to download
             if (file_or_folder[0] != "/") {
                 // Get our directory path - where the file is in the tree, which we will later want to reconstruct
-                var directory = $($("#breadcrumbs").children("ul").children("li").find("span").toArray().slice(2)).map(function( index, val ) {
+                var directory_elts = $($("#breadcrumbs").children("ul").children("li").find("span").toArray()).map(function( index, val ) {
                     return $(val).text();
-                }).toArray().join(PATH_SEP);
+                }).toArray();
+
+
+                // Assume "My files" as original construction
+                var directory = directory_elts.slice(2).join(PATH_SEP);
+                if(directory_elts[2] == "Files") {
+                    // Use alternate construction in case of class specific file view
+                    directory = ([directory_elts[1]].concat(directory_elts.slice(3))).join(PATH_SEP);
+                }
 
                 // Get the file's individual name
                 var filename = $( this ).text();
@@ -143,6 +151,6 @@
     downloadClicker();
     var i = setInterval(function() {
         downloadClicker();
-    }, 500);
+    }, 200);
 
 })();
